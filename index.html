@@ -68,6 +68,15 @@
                     <input type="number" id="tax" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan GST/SST">
                 </div>
 
+                <!-- Status Pembayaran -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status Pembayaran</label>
+                    <select id="paymentStatus" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
+                        <option value="Pending">Pending</option>
+                        <option value="Complete">Complete</option>
+                    </select>
+                </div>
+
                 <!-- Tarikh -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tarikh</label>
@@ -114,6 +123,10 @@
                     <tr>
                         <td class="py-2"><strong>GST/SST:</strong></td>
                         <td class="py-2" id="receiptTax"></td>
+                    </tr>
+                    <tr>
+                        <td class="py-2"><strong>Status Pembayaran:</strong></td>
+                        <td class="py-2" id="receiptPaymentStatus"></td>
                     </tr>
                     <tr>
                         <td class="py-2"><strong>Tarikh:</strong></td>
@@ -170,6 +183,7 @@
             const date = document.getElementById('date').value;
             const discount = parseFloat(document.getElementById('discount').value) || 0;
             const tax = parseFloat(document.getElementById('tax').value) || 0;
+            const paymentStatus = document.getElementById('paymentStatus').value;
             const total = calculateTotal();
 
             if (!customerName || !billNumber || !date || total <= 0) {
@@ -184,6 +198,7 @@
             document.getElementById('receiptAmount').textContent = `${currency} ${total.toFixed(2)}`;
             document.getElementById('receiptDiscount').textContent = `${discount}%`;
             document.getElementById('receiptTax').textContent = `${tax}%`;
+            document.getElementById('receiptPaymentStatus').textContent = paymentStatus;
             document.getElementById('receiptDate').textContent = date;
 
             // Tampilkan logo yang diupload
