@@ -42,6 +42,12 @@
                     <input type="text" id="customerName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan Nama">
                 </div>
 
+                <!-- Email Pelanggan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelCustomerEmail">Email Pelanggan</label>
+                    <input type="email" id="customerEmail" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan Email">
+                </div>
+
                 <!-- Nomor Bill -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelBillNumber">No. Bill</label>
@@ -274,8 +280,14 @@
 
         // Fungsi untuk menghantar email
         async function sendEmail() {
+            const customerEmail = document.getElementById('customerEmail').value;
+            if (!customerEmail) {
+                alert("Sila masukkan email pelanggan!");
+                return;
+            }
+
             const emailData = {
-                to: "pelanggan@example.com",
+                to: customerEmail,
                 subject: "Resi Pembayaran Anda",
                 text: `Terima kasih atas pembayaran anda. Jumlah: RM ${calculateTotal()}`,
             };
@@ -293,16 +305,6 @@
             }
         }
 
-        // Fungsi untuk mengesahkan QR code
-        function verifyQRCode(image) {
-            const code = jsQR(image.data, image.width, image.height);
-            if (code) {
-                alert("QR Code Sah: " + code.data);
-            } else {
-                alert("QR Code Tidak Sah.");
-            }
-        }
-
         // Fungsi untuk toggle tema (light/dark mode)
         function toggleTheme() {
             document.body.classList.toggle('dark');
@@ -312,6 +314,7 @@
         const translations = {
             ms: {
                 customerName: "Nama Pelanggan",
+                customerEmail: "Email Pelanggan",
                 billNumber: "No. Bill",
                 amount: "Jumlah Bayaran",
                 discount: "Diskaun",
@@ -326,6 +329,7 @@
             },
             en: {
                 customerName: "Customer Name",
+                customerEmail: "Customer Email",
                 billNumber: "Bill Number",
                 amount: "Amount",
                 discount: "Discount",
@@ -343,6 +347,7 @@
         function changeLanguage() {
             const lang = document.getElementById('language').value;
             document.getElementById('labelCustomerName').textContent = translations[lang].customerName;
+            document.getElementById('labelCustomerEmail').textContent = translations[lang].customerEmail;
             document.getElementById('labelBillNumber').textContent = translations[lang].billNumber;
             document.getElementById('labelCurrency').textContent = translations[lang].currency;
             document.getElementById('labelDiscount').textContent = translations[lang].discount;
