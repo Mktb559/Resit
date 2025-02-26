@@ -19,10 +19,22 @@
         <!-- Form Input -->
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md mx-auto">
             <div class="space-y-4">
+                <!-- Upload Logo -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Logo Syarikat</label>
+                    <input type="file" id="logoUpload" accept="image/*" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
+                </div>
+
                 <!-- Nama Pelanggan -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Pelanggan</label>
                     <input type="text" id="customerName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan Nama">
+                </div>
+
+                <!-- Nomor Bill -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Bill</label>
+                    <input type="text" id="billNumber" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan No. Bill">
                 </div>
 
                 <!-- Mata Wang -->
@@ -44,10 +56,28 @@
                 </div>
                 <button onclick="addItem()" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 dark:bg-gray-700 dark:text-white">Tambah Item</button>
 
+                <!-- Diskaun -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Diskaun (%)</label>
+                    <input type="number" id="discount" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan Diskaun">
+                </div>
+
+                <!-- GST/SST -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">GST/SST (%)</label>
+                    <input type="number" id="tax" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan GST/SST">
+                </div>
+
                 <!-- Tarikh -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tarikh</label>
                     <input type="date" id="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
+                </div>
+
+                <!-- Upload QR Code -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">QR Code (Opsional)</label>
+                    <input type="file" id="qrUpload" accept="image/*" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
                 </div>
             </div>
 
@@ -59,12 +89,16 @@
         <!-- Resi yang Dihasilkan -->
         <div id="receipt" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md mx-auto mt-8 hidden">
             <div class="text-center">
-                <img src="https://via.placeholder.com/100" alt="Logo" class="w-20 h-20 mx-auto mb-4">
+                <img id="receiptLogo" src="" alt="Logo" class="w-20 h-20 mx-auto mb-4">
                 <h1 class="text-2xl font-bold">Resit Pembayaran</h1>
                 <p class="text-sm text-gray-500 dark:text-gray-300">Terima kasih atas pembayaran anda!</p>
             </div>
             <div class="mt-6">
                 <table class="w-full">
+                    <tr>
+                        <td class="py-2"><strong>No. Bill:</strong></td>
+                        <td class="py-2" id="receiptBillNumber"></td>
+                    </tr>
                     <tr>
                         <td class="py-2"><strong>Nama Pelanggan:</strong></td>
                         <td class="py-2" id="receiptCustomerName"></td>
@@ -74,12 +108,22 @@
                         <td class="py-2" id="receiptAmount"></td>
                     </tr>
                     <tr>
+                        <td class="py-2"><strong>Diskaun:</strong></td>
+                        <td class="py-2" id="receiptDiscount"></td>
+                    </tr>
+                    <tr>
+                        <td class="py-2"><strong>GST/SST:</strong></td>
+                        <td class="py-2" id="receiptTax"></td>
+                    </tr>
+                    <tr>
                         <td class="py-2"><strong>Tarikh:</strong></td>
                         <td class="py-2" id="receiptDate"></td>
                     </tr>
                 </table>
             </div>
-            <div id="qrcode" class="mt-4 flex justify-center"></div>
+            <div id="qrcode" class="mt-4 flex justify-center">
+                <img id="customQR" src="" alt="QR Code" class="hidden">
+            </div>
         </div>
     </div>
 
@@ -108,17 +152,27 @@
             items.forEach(item => {
                 total += parseFloat(item.value) || 0;
             });
+
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const tax = parseFloat(document.getElementById('tax').value) || 0;
+
+            total = total - (total * (discount / 100));
+            total = total + (total * (tax / 100));
+
             return total;
         }
 
         // Fungsi untuk menghasilkan resi
         function generateReceipt() {
             const customerName = document.getElementById('customerName').value;
+            const billNumber = document.getElementById('billNumber').value;
             const currency = document.getElementById('currency').value;
             const date = document.getElementById('date').value;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const tax = parseFloat(document.getElementById('tax').value) || 0;
             const total = calculateTotal();
 
-            if (!customerName || !date || total <= 0) {
+            if (!customerName || !billNumber || !date || total <= 0) {
                 alert("Sila isi semua maklumat dengan betul!");
                 return;
             }
@@ -126,13 +180,37 @@
             // Tampilkan resi
             document.getElementById('receipt').classList.remove('hidden');
             document.getElementById('receiptCustomerName').textContent = customerName;
+            document.getElementById('receiptBillNumber').textContent = billNumber;
             document.getElementById('receiptAmount').textContent = `${currency} ${total.toFixed(2)}`;
+            document.getElementById('receiptDiscount').textContent = `${discount}%`;
+            document.getElementById('receiptTax').textContent = `${tax}%`;
             document.getElementById('receiptDate').textContent = date;
 
-            // Hasilkan QR Code
-            const qrData = `Nama: ${customerName}, Jumlah: ${currency} ${total.toFixed(2)}, Tarikh: ${date}`;
-            document.getElementById('qrcode').innerHTML = '';
-            new QRCode(document.getElementById("qrcode"), qrData);
+            // Tampilkan logo yang diupload
+            const logoUpload = document.getElementById('logoUpload');
+            if (logoUpload.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('receiptLogo').src = e.target.result;
+                };
+                reader.readAsDataURL(logoUpload.files[0]);
+            }
+
+            // Tampilkan QR code yang diupload
+            const qrUpload = document.getElementById('qrUpload');
+            if (qrUpload.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('customQR').src = e.target.result;
+                    document.getElementById('customQR').classList.remove('hidden');
+                };
+                reader.readAsDataURL(qrUpload.files[0]);
+            } else {
+                // Hasilkan QR code otomatis jika tidak ada upload
+                const qrData = `No. Bill: ${billNumber}, Nama: ${customerName}, Jumlah: ${currency} ${total.toFixed(2)}, Tarikh: ${date}`;
+                document.getElementById('qrcode').innerHTML = '';
+                new QRCode(document.getElementById("qrcode"), qrData);
+            }
         }
 
         // Fungsi untuk muat turun PDF
