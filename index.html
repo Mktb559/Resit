@@ -8,7 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900">
     <div class="container mx-auto p-4">
@@ -21,15 +20,6 @@
         <!-- Form Input -->
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md mx-auto">
             <div class="space-y-4">
-                <!-- Pilihan Bahasa -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Pilihan Bahasa</label>
-                    <select id="language" onchange="changeLanguage()" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
-                        <option value="ms">Bahasa Melayu</option>
-                        <option value="en">English</option>
-                    </select>
-                </div>
-
                 <!-- Upload Logo -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Logo Syarikat</label>
@@ -38,25 +28,31 @@
 
                 <!-- Nama Pelanggan -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelCustomerName">Nama Pelanggan</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Pelanggan</label>
                     <input type="text" id="customerName" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan Nama">
                 </div>
 
                 <!-- Email Pelanggan -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelCustomerEmail">Email Pelanggan</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Pelanggan</label>
                     <input type="email" id="customerEmail" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan Email">
+                </div>
+
+                <!-- No. Telefon Pelanggan -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Telefon Pelanggan</label>
+                    <input type="text" id="customerPhone" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan No. Telefon">
                 </div>
 
                 <!-- Nomor Bill -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelBillNumber">No. Bill</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Bill</label>
                     <input type="text" id="billNumber" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan No. Bill">
                 </div>
 
                 <!-- Mata Wang -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelCurrency">Mata Wang</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Mata Wang</label>
                     <select id="currency" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
                         <option value="RM">RM (Ringgit Malaysia)</option>
                         <option value="USD">USD (Dolar Amerika)</option>
@@ -71,23 +67,23 @@
                         <input type="number" placeholder="Harga" class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
                     </div>
                 </div>
-                <button onclick="addItem()" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 dark:bg-gray-700 dark:text-white" id="buttonAddItem">Tambah Item</button>
+                <button onclick="addItem()" class="w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 dark:bg-gray-700 dark:text-white">Tambah Item</button>
 
                 <!-- Diskaun -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelDiscount">Diskaun (%)</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Diskaun (%)</label>
                     <input type="number" id="discount" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan Diskaun">
                 </div>
 
                 <!-- GST/SST -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelTax">GST/SST (%)</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">GST/SST (%)</label>
                     <input type="number" id="tax" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white" placeholder="Masukkan GST/SST">
                 </div>
 
                 <!-- Status Pembayaran -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelPaymentStatus">Status Pembayaran</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status Pembayaran</label>
                     <select id="paymentStatus" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
                         <option value="Pending">Pending</option>
                         <option value="Complete">Complete</option>
@@ -96,28 +92,29 @@
 
                 <!-- Tarikh -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelDate">Tarikh</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tarikh</label>
                     <input type="date" id="date" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
                 </div>
 
                 <!-- Upload QR Code -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelQRCode">QR Code (Opsional)</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">QR Code (Opsional)</label>
                     <input type="file" id="qrUpload" accept="image/*" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm dark:bg-gray-700 dark:text-white">
                 </div>
 
                 <!-- Tandatangan Digital -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300" id="labelSignature">Tandatangan Digital</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tandatangan Digital</label>
                     <canvas id="signaturePad" class="w-full h-32 border border-gray-300 rounded-md shadow-sm"></canvas>
-                    <button onclick="clearSignature()" class="mt-2 w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 dark:bg-gray-700 dark:text-white" id="buttonClearSignature">Padam Tandatangan</button>
+                    <button onclick="clearSignature()" class="mt-2 w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 dark:bg-gray-700 dark:text-white">Padam Tandatangan</button>
                 </div>
             </div>
 
             <!-- Tombol Jana Resit dan Muat Turun PDF -->
-            <button onclick="generateReceipt()" class="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600" id="buttonGenerateReceipt">Jana Resit</button>
-            <button onclick="downloadPDF()" class="mt-4 w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600" id="buttonDownloadPDF">Muat Turun PDF</button>
-            <button onclick="sendEmail()" class="mt-4 w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600" id="buttonSendEmail">Hantar Email</button>
+            <button onclick="generateReceipt()" class="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Jana Resit</button>
+            <button onclick="downloadPDF()" class="mt-4 w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600">Muat Turun PDF</button>
+            <button onclick="sendEmail()" class="mt-4 w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600">Hantar Email</button>
+            <button onclick="sendWhatsApp()" class="mt-4 w-full bg-teal-500 text-white py-2 px-4 rounded-md hover:bg-teal-600">Hantar ke WhatsApp</button>
         </div>
 
         <!-- Resi yang Dihasilkan -->
@@ -158,6 +155,8 @@
                         <td class="py-2" id="receiptDate"></td>
                     </tr>
                 </table>
+                <!-- Item dan Harga -->
+                <div id="receiptItems" class="mt-4"></div>
             </div>
             <div id="qrcode" class="mt-4 flex justify-center">
                 <img id="customQR" src="" alt="QR Code" class="hidden">
@@ -227,6 +226,20 @@
             document.getElementById('receiptPaymentStatus').textContent = paymentStatus;
             document.getElementById('receiptDate').textContent = date;
 
+            // Tampilkan item dan harga
+            const items = document.querySelectorAll('#itemList input[type="text"]');
+            const prices = document.querySelectorAll('#itemList input[type="number"]');
+            let itemsHTML = '<h3 class="text-lg font-bold mt-4">Item dan Harga</h3>';
+            items.forEach((item, index) => {
+                itemsHTML += `
+                    <div class="flex justify-between">
+                        <span>${item.value}</span>
+                        <span>${currency} ${prices[index].value}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('receiptItems').innerHTML = itemsHTML;
+
             // Tampilkan logo yang diupload
             const logoUpload = document.getElementById('logoUpload');
             if (logoUpload.files[0]) {
@@ -278,7 +291,7 @@
             });
         }
 
-        // Fungsi untuk menghantar email
+        // Fungsi untuk hantar email
         async function sendEmail() {
             const customerEmail = document.getElementById('customerEmail').value;
             if (!customerEmail) {
@@ -286,79 +299,49 @@
                 return;
             }
 
-            const emailData = {
-                to: customerEmail,
-                subject: "Resi Pembayaran Anda",
-                text: `Terima kasih atas pembayaran anda. Jumlah: RM ${calculateTotal()}`,
+            const receiptData = {
+                customerName: document.getElementById('customerName').value,
+                billNumber: document.getElementById('billNumber').value,
+                amount: calculateTotal(),
+                date: document.getElementById('date').value,
             };
 
             const response = await fetch('/api/sendEmail', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(emailData),
+                body: JSON.stringify({ to: customerEmail, ...receiptData }),
             });
 
             if (response.ok) {
                 alert("Email berjaya dihantar!");
             } else {
-                alert("Gagal menghantar email.");
+                alert("Gagal menghantar email. Pastikan backend berfungsi.");
             }
+        }
+
+        // Fungsi untuk hantar ke WhatsApp
+        function sendWhatsApp() {
+            const customerPhone = document.getElementById('customerPhone').value;
+            if (!customerPhone) {
+                alert("Sila masukkan nombor telefon pelanggan!");
+                return;
+            }
+
+            const receiptData = {
+                customerName: document.getElementById('customerName').value,
+                billNumber: document.getElementById('billNumber').value,
+                amount: calculateTotal(),
+                date: document.getElementById('date').value,
+            };
+
+            const message = `Resit Pembayaran\nNama: ${receiptData.customerName}\nNo. Bill: ${receiptData.billNumber}\nJumlah: RM ${receiptData.amount.toFixed(2)}\nTarikh: ${receiptData.date}`;
+            const url = `https://wa.me/${customerPhone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
         }
 
         // Fungsi untuk toggle tema (light/dark mode)
         function toggleTheme() {
             document.body.classList.toggle('dark');
-        }
-
-        // Fungsi untuk mengubah bahasa
-        const translations = {
-            ms: {
-                customerName: "Nama Pelanggan",
-                customerEmail: "Email Pelanggan",
-                billNumber: "No. Bill",
-                amount: "Jumlah Bayaran",
-                discount: "Diskaun",
-                tax: "GST/SST",
-                paymentStatus: "Status Pembayaran",
-                date: "Tarikh",
-                generateReceipt: "Jana Resit",
-                downloadPDF: "Muat Turun PDF",
-                sendEmail: "Hantar Email",
-                addItem: "Tambah Item",
-                clearSignature: "Padam Tandatangan",
-            },
-            en: {
-                customerName: "Customer Name",
-                customerEmail: "Customer Email",
-                billNumber: "Bill Number",
-                amount: "Amount",
-                discount: "Discount",
-                tax: "GST/SST",
-                paymentStatus: "Payment Status",
-                date: "Date",
-                generateReceipt: "Generate Receipt",
-                downloadPDF: "Download PDF",
-                sendEmail: "Send Email",
-                addItem: "Add Item",
-                clearSignature: "Clear Signature",
-            }
-        };
-
-        function changeLanguage() {
-            const lang = document.getElementById('language').value;
-            document.getElementById('labelCustomerName').textContent = translations[lang].customerName;
-            document.getElementById('labelCustomerEmail').textContent = translations[lang].customerEmail;
-            document.getElementById('labelBillNumber').textContent = translations[lang].billNumber;
-            document.getElementById('labelCurrency').textContent = translations[lang].currency;
-            document.getElementById('labelDiscount').textContent = translations[lang].discount;
-            document.getElementById('labelTax').textContent = translations[lang].tax;
-            document.getElementById('labelPaymentStatus').textContent = translations[lang].paymentStatus;
-            document.getElementById('labelDate').textContent = translations[lang].date;
-            document.getElementById('buttonGenerateReceipt').textContent = translations[lang].generateReceipt;
-            document.getElementById('buttonDownloadPDF').textContent = translations[lang].downloadPDF;
-            document.getElementById('buttonSendEmail').textContent = translations[lang].sendEmail;
-            document.getElementById('buttonAddItem').textContent = translations[lang].addItem;
-            document.getElementById('buttonClearSignature').textContent = translations[lang].clearSignature;
         }
     </script>
 </body>
